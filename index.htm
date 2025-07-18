@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="icon.ico">
+    <style>
+        .Button_ChonThoiGian
+        {
+            min-width:2vw;
+            border-radius:0.3vw;
+            padding:0.3vw;
+            background: rgba(255,255,255,0.4);
+            color:green;
+            font-size:1vw;
+            text-align:center;
+        }
+        
+        .Button_ChonThoiGian:hover
+        {
+            background:green;
+            color:white;
+        }
+        
+        .Button_ChonThoiGian_TuChon
+        {
+            height:2vw;
+            border: 1px solid green;
+            border-radius:0.3vw;
+            padding:0.3vw;
+            margin:0px;
+            background: orange;
+            color:white;
+            font-size:1vw;
+            width:2.5vw;
+            text-align:center;
+        }
+        
+        .Button_Play
+        {
+            min-width:6vw;
+            border-radius:0.3vw;
+            padding:0.6vw;
+            background: white;
+            color:green;
+            font-size:1.5vw;
+            text-align:center;
+        }
+        
+        .Button_Pause
+        {
+            min-width:6vw;
+            border-radius:0.3vw;
+            padding:0.7vw;
+            padding-left:1vw;
+            padding-right:1vw;
+            background: yellow;
+            color:red;
+            font-size:1.5vw;
+            text-align:center;
+        }
+        
+        .Button_Stop
+        {
+            min-width:3vw;
+            border-radius:0.3vw;
+            padding:0.5vw;
+            background: white;
+            margin:1vw;
+            color:green;
+            font-size:1vw;
+            text-align:center;
+        }
+        
+        
+        .Button_Play:hover, .Button_Pause:hover, .Button_Stop:hover
+        {
+            background:orange;
+            color:white;
+        }
+        
+        .DivButtonChonThoiGian
+        {
+            position:absolute;
+            bottom:0.2vw;
+            left:1.5vw;
+            z-index:100;
+            padding:0px;
+            width:100%;
+            text-align:center;
+            
+        }
+        
+        .DivButtonChonThoiGian_TuChon
+        {
+            position:absolute;
+            bottom:-1.8vw;
+            left:0.2vw;
+            z-index:101;
+            padding:0px;
+            text-align:right;
+        }
+        
+        .DivMain
+        {
+            position:relative;
+            margin-top:5vh;
+            
+            height:auto;
+            padding:3vw;
+            background:rgba(255,255,255,0.3);
+            border-radius:10px;
+            font-size:10vw;
+            color:white;
+            text-align:center;
+        }
+        @media only screen and (max-width: 400px) {.DivMain{width:90%;}}
+        @media screen and (max-width: 900px) and (min-width: 401px) {.DivMain{width:75%;}}
+        @media only screen and (min-width: 901px) {.DivMain{width:50%;}}
+        
+        html
+        {
+            background: -webkit-linear-gradient(top left, #25A55E, #9ABE5B);
+        }
+    
+        select 
+        {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            text-indent: 1px;
+            text-overflow: '';
+        }
+        
+        .XemGio_BamGio_Active 
+        {
+            border:solid 1px white;
+            width:80%;
+            border-radius:5px;
+            padding-top:1vw;
+            padding-bottom:1vw;
+            background:green;
+            color:white;
+            font-weight:bold;
+            font-size:1vw;
+        }
+        
+        .XemGio_BamGio_InActive 
+        {
+            border:solid 1px green;
+            width:80%;
+            border-radius:5px;
+            padding-top:1vw;
+            padding-bottom:1vw;
+            background:white;
+            color:green;
+            font-weight:bold;
+            font-size:1vw;
+        }
+    </style>
+</head>
+<body><center>
+    <input type="text" id="Txt24H" value="24" placeholder="24h" style="display:none;">
+    
+    <div>
+        <div id="DivXemGio" style="display:none;" class="DivMain">
+            <center>
+            <div style="background:green;border-radius:10px;max-width:90%;height:100%;padding:3vw;">
+                <table border="0">
+                    <tr>
+                        <td>
+                            <div id="XemGio"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="position:relative;">
+                            <div id="DivAmPm" style="width:100%;text-align:right;font-size:2vw;position:relative;">
+                                
+                            </div>
+                            
+                            <div id="Div24H" style="position:absolute;top:0px;left:105%;background:white;border-radius:3px;padding:3px;color:green;font-size:1vw;" onclick="Change24h();">
+                                24H
+                            </div>
+                            <script>
+                            
+                                var DangDem;
+                                function Change24h()
+                                {
+                                    var HaiTuGio = $("#Txt24H").val();
+                                    if (HaiTuGio == '12')
+                                    {
+                                        $("#Txt24H").val('24');
+                                        $("#Div24H").text('24H');
+                                    }
+                                    else
+                                    {
+                                        $("#Txt24H").val('12');
+                                        $("#Div24H").text('12H');
+                                    }
+                                }
+                            </script>
+                        </td>
+                    </tr>
+                </table>
+                </center>
+            </div>
+        </div>
+        
+        
+        
+        <table style="display:none;">
+                                <tr>
+                                    <td>
+                                        <input type="text" id="TxtPhut0" value="05" placeholder="24h" style="width:20px;background:#f2f2f2;">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="TxtGiay0" value="00" placeholder="24h" style="width:20px;background:#f2f2f2;">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="TxtPhanTramGiay0" value="00" placeholder="24h" style="width:20px;background:#f2f2f2;">
+                                    </td>
+                                    
+                                    
+                                    
+                                    <td>
+                                        <input type="text" id="TxtPhut" value="05" placeholder="24h" style="width:20px;">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="TxtGiay" value="00" placeholder="24h" style="width:20px;">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="TxtPhanTramGiay" value="00" placeholder="24h" style="width:20px;">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="TxtDemNguocXuoi" value="nguoc" placeholder="24h" style="width:80px;">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="TxtPlayPause" value="play" placeholder="24h" style="width:80px;">
+                                    </td>
+                                    
+                                    <td>
+                                        <input type="text" id="TxtGioDau" value="0" placeholder="24h" style="width:20px;background:red;">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="TxtPhutDau" value="0" placeholder="24h" style="width:20px;background:red;">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="TxtGiayDau" value="0" placeholder="24h" style="width:20px;background:red;">
+                                    </td>
+                                    
+                                    
+                                    
+                                    <td>
+                                        <input type="text" id="TxtPhutDangDem" value="0" placeholder="24h" style="width:20px;background:red;">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="TxtGiayDangDem" value="0" placeholder="24h" style="width:20px;background:red;">
+                                    </td>
+                                    
+                                    <td>
+                                        <input type="text" id="TxtPhanTramGiayDangDem" value="0" placeholder="24h" style="width:20px;background:red;">
+                                        <audio id="ChuongHetGio">
+	                                        <source src="chuonghetgio.mp3" autostart=false loop=false style="">
+	                                    </audio>
+                                    </td>
+                                    <script>
+                                        function PhatNhac()
+                                        {
+                                            document.getElementById('ChuongHetGio').currentTime=1;
+                                            document.getElementById('ChuongHetGio').play();
+                                        }
+                                        
+                                        function StopNhac()
+                                        {
+                                            document.getElementById('ChuongHetGio').pause();
+                                            document.getElementById('ChuongHetGio').currentTime=1;
+                                        }
+                                    </script>
+                                </tr>
+                            </table>
+                            
+        <div id="DivDemGio" class="DivMain" style="">
+            <center>
+            <div style="background:green;border-radius:10px;max-width:90%;height:100%;padding:3vw;">
+                <table border="0">
+                    <tr>
+                        <td>
+                            <div id="DemGio">
+                                05:00:00
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="position:relative;">
+                            <div id="DemGio_XemGioNho" style="width:100%;text-align:right;font-size:2vw;"></div>
+                            <div id="ButtonControl" style="position:absolute;top:0vw;left:0px;z-index:102;">
+                                <table>
+                                    <tr>
+                                        <td style="vertical-align:text-bottom;">
+                                            <input type="text" id="TxtDangStop" value="1" placeholder="24h" style="width:20px;background:red;font-size:12px;display:none;">
+                                            <div id="Button_Stop" style="" class="Button_Stop" onclick="clearTimeout(DangDem);Stop();StopNhac();">Restart</div>
+                                        </td>
+                                        <td>
+                                            <div id="Button_Play" class="Button_Play" onclick="clearTimeout(DangDem);PlayPause();">START</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <script>
+                                
+                                function PlayPause()
+                                {
+                                    var PP = $("#TxtPlayPause").val();
+                                    var XuoiNguoc = $("#TxtDemNguocXuoi").val();
+                                    
+                                    var date = new Date();
+                                    var h = date.getHours();
+                                    var m = date.getMinutes();
+                                    var s = date.getSeconds();
+                                    StopNhac();
+                                    
+                                    if (PP == 'play')
+                                    {
+                                        $("#TxtDangStop").val('0');
+                                        $("#TxtGioDau").val(h);
+                                        $("#TxtPhutDau").val(m);
+                                        $("#TxtGiayDau").val(s);
+                                        
+                                        $("#Button_Play").text('Stop');
+                                        $("#TxtPlayPause").val('pause');
+                                          
+                                        $("#Button_Play").removeClass('Button_Play');
+                                        $("#Button_Play").addClass('Button_Pause');
+                                        if (XuoiNguoc == 'xuoi'){DemXuoi();} else {DemNguoc();}
+                                    }
+                                    else
+                                    {
+                                        $("#Button_Play").text('START');
+                                        $("#TxtPlayPause").val('play');
+                                          
+                                        $("#Button_Play").addClass('Button_Play');
+                                        $("#Button_Play").removeClass('Button_Pause');
+                                        clearTimeout(DangDem);
+                                        $("#TxtPhanTramGiay").val($("#TxtPhanTramGiayDangDem").val());
+                                        $("#TxtPhut").val($("#TxtPhutDangDem").val());
+                                        $("#TxtGiay").val($("#TxtGiayDangDem").val());
+                                    }
+                                }
+                                
+                                function DemXuoi()
+                                {
+                                    var ppp = parseInt($("#TxtPhut").val());
+                                    var ggg = parseInt($("#TxtGiay").val());
+                                    var ptpt = parseInt($("#TxtPhanTramGiay").val());
+                                    
+                                    var hd = parseInt($("#TxtGioDau").val());
+                                    var md = parseInt($("#TxtPhutDau").val());
+                                    var sd = parseInt($("#TxtGiayDau").val());
+                                    
+                                    var date = new Date();
+                                    var hht = parseInt(date.getHours());
+                                    var mht = parseInt(date.getMinutes());
+                                    var sht = parseInt(date.getSeconds());
+                                    
+                                    if (sht < sd)
+                                    {
+                                        var ChenhGiay = sht + 60 - sd;
+                                        var ChenhPhut = (mht < md) ? mht + 60 - md - 1 : mht - md - 1;
+                                    }
+                                    else
+                                    {
+                                        var ChenhPhut = (mht < md) ? mht + 60 - md : mht - md;
+                                        var ChenhGiay = sht - sd;
+                                    }
+                                    
+                                    if (ggg + ChenhGiay <= 59) 
+                                    {
+                                        ggg = ggg + ChenhGiay;
+                                        ppp = ppp + ChenhPhut;
+                                    }
+                                    else
+                                    {
+                                        ggg = ggg + ChenhGiay - 60;
+                                        ppp = ppp + ChenhPhut + 1;
+                                    }
+                                    
+                                    if (ptpt < 95)
+                                    {
+                                        ptpt = ptpt + 5;
+                                    }
+                                    else
+                                    {
+                                        ptpt = 0;
+                                    }
+                                    
+                                    ppp = (ppp < 10) ? "0" + ppp : ppp;
+                                    ggg = (ggg < 10) ? "0" + ggg : ggg;
+                                    ptpt = (ptpt < 10) ? "0" + ptpt : ptpt;
+                                    
+                                    $("#TxtPhanTramGiayDangDem").val(ptpt);
+                                    $("#TxtPhanTramGiay").val(ptpt);
+                                    $("#TxtPhutDangDem").val(ppp);
+                                    $("#TxtGiayDangDem").val(ggg);
+                                        
+                                    $("#DemGio").text(ppp + ':' + ggg  + ':' + ptpt);
+                                    DangDem = setTimeout(function(){ DemXuoi(); }, 50);
+                                }
+                                
+                                function DemNguoc()
+                                {
+                                    var ppp = parseInt($("#TxtPhut").val());
+                                    var ggg = parseInt($("#TxtGiay").val()) -1;
+                                    var ptpt = parseInt($("#TxtPhanTramGiay").val());
+                                    
+                                    var hd = parseInt($("#TxtGioDau").val());
+                                    var md = parseInt($("#TxtPhutDau").val());
+                                    var sd = parseInt($("#TxtGiayDau").val());
+                                    
+                                    var date = new Date();
+                                    var hht = parseInt(date.getHours());
+                                    var mht = parseInt(date.getMinutes());
+                                    var sht = parseInt(date.getSeconds());
+                                    
+                                    if (sht < sd)
+                                    {
+                                        var ChenhGiay = sht + 60 - sd;
+                                        var ChenhPhut = (mht < md) ? mht + 60 - md - 1 : mht - md - 1;
+                                    }
+                                    else
+                                    {
+                                        var ChenhPhut = (mht < md) ? mht + 60 - md : mht - md;
+                                        var ChenhGiay = sht - sd;
+                                    }
+                                    
+                                    if (ggg >= ChenhGiay) 
+                                    {
+                                        ggg = ggg - ChenhGiay;
+                                        ppp = ppp - ChenhPhut;
+                                    }
+                                    else
+                                    {
+                                        ggg = ggg - ChenhGiay + 60;
+                                        ppp = ppp - ChenhPhut - 1;
+                                    }
+                                    
+                                    Thoat:{
+                                        if (ptpt > 0)
+                                        {
+                                            ptpt = ptpt - 5;
+                                            if (ptpt ==0 || ptpt ==5) 
+                                            {
+                                                if (ppp ==0 && ggg==0)
+                                                {
+                                                    PhatNhac();
+                                                    Stop(1);
+                                                    break Thoat;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            ptpt = 95;      
+                                        }
+                                        
+                                        ppp = (ppp < 10) ? "0" + ppp : ppp;
+                                        ggg = (ggg < 10) ? "0" + ggg : ggg;
+                                        ptpt = (ptpt < 10) ? "0" + ptpt : ptpt;
+                                        $("#TxtPhanTramGiayDangDem").val(ptpt);
+                                        $("#TxtPhanTramGiay").val(ptpt);
+                                        $("#TxtPhutDangDem").val(ppp);
+                                        $("#TxtGiayDangDem").val(ggg);
+                                        $("#DemGio").text(ppp + ':' + ggg  + ':' + ptpt);
+                                        DangDem = setTimeout(function(){ DemNguoc(); }, 50);
+                                    }
+                                }
+                                
+                                
+                                function Stop(iii)
+                                {
+                                    //alert('fdssf');
+                                    
+                                    var XuoiNguoc = $("#TxtDemNguocXuoi").val();
+                                    $("#TxtDangStop").val('1');
+                                    if (XuoiNguoc=='xuoi')
+                                    {
+                                        $("#DemGio").text('00:00:00');
+                                        $("#TxtPhut").val('00');
+                                        $("#TxtGiay").val('00');
+                                        $("#TxtPhanTramGiay").val('00');
+                                    }
+                                    else
+                                    {
+                                        if (iii ==1)
+                                        {$("#DemGio").text('00:00:00');}
+                                        else
+                                        {
+                                            $("#DemGio").text($("#TxtPhut0").val() + ':' + $("#TxtGiay0").val() + ':' + $("#TxtPhanTramGiay0").val());
+                                            $("#TxtPhut").val($("#TxtPhut0").val());
+                                            $("#TxtGiay").val($("#TxtGiay0").val());
+                                            $("#TxtPhanTramGiay").val($("#TxtPhanTramGiay0").val());
+                                        }
+                                    }
+                                    $("#Button_Play").text('START');
+                                    $("#TxtPlayPause").val('play');
+                                          
+                                    $("#Button_Play").addClass('Button_Play');
+                                    $("#Button_Play").removeClass('Button_Pause');
+                                    clearTimeout(DangDem);
+                                        
+                                }
+                                
+                            </script>
+                        </td>
+                    </tr>
+                </table>
+                <center>
+                <div style="" class="DivButtonChonThoiGian_TuChon">
+					<table>
+						<tr>
+							<td>
+								<select id="ChonThoiGianTuChon_Gio" class="Button_ChonThoiGian_TuChon" onchange="ChangePhutGiay0();">
+									<?php
+									    for ($i=0;$i<=12;$i++)
+									    {
+									        if ($i<10)
+									        {
+									            echo '<option value="'.$i.'">0'.$i.'</option>';
+									        }
+									        else
+									        {
+									            echo '<option value="'.$i.'">'.$i.'</option>';
+									        }
+									    }
+									?>
+								</select>
+							</td>
+							<td>
+								<select id="ChonThoiGianTuChon_Phut" class="Button_ChonThoiGian_TuChon" onchange="ChangePhutGiay0();">
+									<?php
+									    for ($i=0;$i<=59;$i++)
+									    {
+									        if ($i<10)
+									        {
+									            echo '<option value="'.$i.'">0'.$i.'</option>';
+									        }
+									        else
+									        {
+									            echo '<option value="'.$i.'">'.$i.'</option>';
+									        }
+									    }
+									?>
+								</select>
+							</td>
+							<td>
+								<select id="ChonThoiGianTuChon_Giay" class="Button_ChonThoiGian_TuChon" onchange="ChangePhutGiay0();">
+									<?php
+									    for ($i=0;$i<=59;$i++)
+									    {
+									        if ($i<10)
+									        {
+									            echo '<option value="'.$i.'">0'.$i.'</option>';
+									        }
+									        else
+									        {
+									            echo '<option value="'.$i.'">'.$i.'</option>';
+									        }
+									    }
+									?>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</div>
+									
+                <div id="DivButtonChonThoiGian" class="DivButtonChonThoiGian" style=""><center>
+                                <table style="padding:0px;" border="0">
+                                    <tr>
+                                        <td>
+                                            <div id="ChonThoiGian10S" style="" class="Button_ChonThoiGian" onclick="ChonThoiGian('00:30');">30s</div>
+                                        </td>
+                                        <td>
+                                            <div id="ChonThoiGian10S" style="" class="Button_ChonThoiGian" onclick="ChonThoiGian('01:00');">01m</div>
+                                        </td>
+                                        <td>
+                                            <div id="ChonThoiGian10S" style="" class="Button_ChonThoiGian" onclick="ChonThoiGian('05:00');">05m</div>
+                                        </td>
+                                        <td>
+                                            <div id="ChonThoiGian10S" style="" class="Button_ChonThoiGian" onclick="ChonThoiGian('10:00');">10m</div>
+                                        </td>
+                                        <td>
+                                            <div id="ChonThoiGian10S" style="" class="Button_ChonThoiGian" onclick="ChonThoiGian('30:00');">30m</div>
+                                        </td>
+                                        <td>
+                                            <div id="ChonThoiGian10S" style="" class="Button_ChonThoiGian" onclick="ChonThoiGian('60:00');">1hour</div>
+                                        </td>
+                                        <td>
+                                            <div id="ChonThoiGian10S" style="" class="Button_ChonThoiGian" onclick="ChonThoiGian('120:00');">2hours</div>
+                                        </td>
+                                        
+                                    </tr>
+                                </table>
+                    <script>
+                        function ChangePhutGiay0()
+                        {
+                            var Gio = $("#ChonThoiGianTuChon_Gio").val();
+                            var Phut = $("#ChonThoiGianTuChon_Phut").val();
+                            var Giay = $("#ChonThoiGianTuChon_Giay").val();
+                            Phut = parseInt(Gio * 60) + parseInt(Phut);
+                            if (Phut<10) {var Phut2 = '0' + parseInt(Phut);} else {var Phut2 = parseInt(Phut);}
+                            if (Giay<10) {var Giay2 = '0' + parseInt(Giay);} else {var Giay2 = parseInt(Giay);}
+                            
+                            $("#TxtPhut0").val(Phut2);
+                            $("#TxtGiay0").val(Giay2);
+                            $("#TxtPhanTramGiay0").val('00');
+                            
+                            var DangStop = $("#TxtDangStop").val();
+                            if (DangStop == '1') 
+                            {
+                                $("#TxtPhut").val(Phut2);
+                                $("#TxtGiay").val(Giay2);
+                                $("#TxtPhanTramGiay").val('00');
+                                $("#DemGio").text(Phut2 + ':' + Giay2  + ':00');
+                            }
+                        }
+                        
+                        
+                        function ChonThoiGian(PhutGiay) //'00:10'
+                        {
+                            var tach = PhutGiay.split(':');
+                            var Phut = tach[0];
+                            var Giay = tach[1];
+                            
+                            $("#TxtPhut0").val(Phut);
+                            $("#TxtGiay0").val(Giay);
+                            $("#TxtPhanTramGiay0").val('00');
+                            
+                            var Gio = Math.floor(parseInt(Phut)/60);
+                            var Phut2 = Phut - Gio*60;
+                            
+                            Phut2 = parseInt(Phut2);
+                            var Giay2 = parseInt(Giay);
+                            $("#ChonThoiGianTuChon_Gio").val(Gio).change();
+                            $("#ChonThoiGianTuChon_Phut").val(Phut2).change();
+                            $("#ChonThoiGianTuChon_Giay").val(Giay2).change();
+                            
+                            var DangStop = $("#TxtDangStop").val();
+                            if (DangStop == '1') 
+                            {
+                                $("#TxtPhut").val(Phut);
+                                $("#TxtGiay").val(Giay);
+                                $("#TxtPhanTramGiay").val('00');
+                                $("#DemGio").text(Phut + ':' + Giay  + ':00');
+                            }
+                        }
+                    </script>
+            </div>
+            </div>
+        </div>
+        
+        
+ 
+        
+        <div style="margin-top:1vh;width:54vw;height:auto;padding:1vw;background: -webkit-linear-gradient(top left, #ffffff, #9ABE5B);border-radius:3vw;font-size:1vw;color:white;text-align:center;"><center>
+            <table style="width:90%;" border="0">
+                <tr>
+                    <td style="width:33%;"><center>
+                        <div id="XemGio_Button" class="XemGio_BamGio_InActive" onclick="ShowXemGio();">
+                            XEM GIỜ
+                        </div></center>
+                    </td>
+                    
+                    <td style="width:33%;"><center>
+                        <div id="DemNguoc_Button" style="" class="XemGio_BamGio_Active" onclick="ShowDemNguoc();">
+                            ĐẾM NGƯỢC
+                        </div></center>
+                    </td>
+                    
+                    <td><center>
+                        <div id="DemXuoi_Button" style="" class="XemGio_BamGio_InActive" onclick="ShowDemXuoi();">
+                            TÍNH GIỜ
+                        </div></center>
+                    </td>
+                </tr>
+            </table>
+            <script>
+                function ShowXemGio()
+                {
+                    $("#XemGio_Button").removeClass('XemGio_BamGio_InActive');
+                    $("#XemGio_Button").addClass('XemGio_BamGio_Active');
+                    
+                    $("#DemNguoc_Button").addClass('XemGio_BamGio_InActive');
+                    $("#DemNguoc_Button").removeClass('XemGio_BamGio_Active');
+                    
+                    $("#DemXuoi_Button").addClass('XemGio_BamGio_InActive');
+                    $("#DemXuoi_Button").removeClass('XemGio_BamGio_Active');
+                    
+                    $("#DivXemGio").show();
+                    $("#DivDemGio").hide();
+                    $("#DivButtonChonThoiGian").hide();
+                }
+                
+                function ShowDemNguoc()
+                {
+                    $("#XemGio_Button").addClass('XemGio_BamGio_InActive');
+                    $("#XemGio_Button").removeClass('XemGio_BamGio_Active');
+                    
+                    $("#DemNguoc_Button").removeClass('XemGio_BamGio_InActive');
+                    $("#DemNguoc_Button").addClass('XemGio_BamGio_Active');
+                    
+                    $("#DemXuoi_Button").addClass('XemGio_BamGio_InActive');
+                    $("#DemXuoi_Button").removeClass('XemGio_BamGio_Active');
+                    
+                    $("#DemGio").text('05:00:00');
+                    $("#TxtPhut").val('05');
+                    $("#TxtGiay").val('00');
+                    $("#TxtPhanTramGiay").val('00');
+                    
+                    $("#TxtDemNguocXuoi").val('nguoc');
+                    $("#DivXemGio").hide();
+                    $("#DivDemGio").show();
+                    $("#DivButtonChonThoiGian").show();
+                    
+                }
+                
+                
+                function ShowDemXuoi()
+                {
+                    $("#XemGio_Button").addClass('XemGio_BamGio_InActive');
+                    $("#XemGio_Button").removeClass('XemGio_BamGio_Active');
+                    
+                    $("#DemNguoc_Button").addClass('XemGio_BamGio_InActive');
+                    $("#DemNguoc_Button").removeClass('XemGio_BamGio_Active');
+                    
+                    $("#DemXuoi_Button").removeClass('XemGio_BamGio_InActive');
+                    $("#DemXuoi_Button").addClass('XemGio_BamGio_Active');
+                    
+                    $("#DemGio").text('00:00:00');
+                    $("#TxtPhut").val('00');
+                    $("#TxtGiay").val('00');
+                    $("#TxtPhanTramGiay").val('00');
+                    
+                    $("#TxtDemNguocXuoi").val('xuoi');
+                    $("#DivXemGio").hide();
+                    $("#DivDemGio").show();
+                    $("#DivButtonChonThoiGian").hide();
+                    
+                }
+            </script>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div style=""></div>
+    </center>
+</body>
+</html>
+<script>
+        function showTime()
+        {
+            var HaiTuGio = $("#Txt24H").val();
+            var date = new Date();
+            var h = date.getHours(); // 0 - 23
+            var m = date.getMinutes(); // 0 - 59
+            var s = date.getSeconds(); // 0 - 59
+            var day = date.getDay();
+            
+            var month = date.getUTCMonth() + 1; //months from 1-12
+            var day = date.getUTCDate();
+            var year = date.getUTCFullYear();
+
+            var session = "";
+            
+            
+            
+            if (HaiTuGio =='12'){
+                session = "AM";
+                if(h == 0)
+                {
+                    h = 12;
+                }
+                
+                if(h > 12){
+                    h = h - 12;
+                    session = "PM";
+                }
+            }
+            
+            h = (h < 10) ? "0" + h : h;
+            m = (m < 10) ? "0" + m : m;
+            s = (s < 10) ? "0" + s : s;
+            
+            var time = h + ":" + m + ":" + s;
+            document.getElementById("XemGio").innerText = time;
+            document.getElementById("XemGio").textContent = time;
+            $("#DemGio_XemGioNho").text(time + ' ' + session);
+            document.getElementById("DivAmPm").innerText = day + '/' + month + '/' + year + ' ' + session;
+            document.getElementById("DivAmPm").textContent = day + '/' + month + '/' + year + ' ' + session;
+            setTimeout(showTime, 1000);
+            
+        }
+        
+        showTime();
+    </script>
