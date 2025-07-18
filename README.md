@@ -1,6 +1,8 @@
 # clock-html
 đồng hồ xem giờ/bấm giờ, ngày tháng đa năng
 
+Trạng thái: Đang phát triển
+
 ## I. THÔNG TIN PHẦN MỀM:
 ### 1. CHỨC NĂNG CHÍNH:
 
